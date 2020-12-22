@@ -1,7 +1,14 @@
 <template>
   <div class="profile">
     <div v-if="profile">
-      <h1>Profile: {{ profile.user.name }}</h1>
+      <div>
+        <ul>
+          <h1>Profile</h1>
+          <li v-for="(col, i) in profile" :key="i">
+            {{ col }}
+          </li>
+        </ul>
+      </div>
     </div>
     <div
       v-else

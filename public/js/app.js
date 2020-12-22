@@ -2128,6 +2128,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Profile",
   data: function data() {
@@ -2193,6 +2200,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Settings",
   data: function data() {
@@ -2206,6 +2228,23 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/api/profiles/".concat(id)).then(function (res) {
         return _this.profile = res.data;
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    imageChange: function imageChange(e) {
+      var _this2 = this;
+
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[0]);
+
+      fileReader.onload = function (e) {
+        _this2.profile.bgImg = e.target.result;
+      };
+    },
+    saveChanges: function saveChanges() {
+      axios.put("/api/profiles/".concat(this.profile.id), this.profile).then(function (res) {
+        return console.log(res);
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -38115,7 +38154,21 @@ var render = function() {
   return _c("div", { staticClass: "profile" }, [
     _vm.profile
       ? _c("div", [
-          _c("h1", [_vm._v("Profile: " + _vm._s(_vm.profile.user.name))])
+          _c("div", [
+            _c(
+              "ul",
+              [
+                _c("h1", [_vm._v("Profile")]),
+                _vm._v(" "),
+                _vm._l(_vm.profile, function(col, i) {
+                  return _c("li", { key: i }, [
+                    _vm._v("\n          " + _vm._s(col) + "\n        ")
+                  ])
+                })
+              ],
+              2
+            )
+          ])
         ])
       : _c(
           "div",
@@ -38163,7 +38216,43 @@ var render = function() {
   return _c("div", { staticClass: "settings" }, [
     _vm.profile
       ? _c("div", [
-          _c("h1", [_vm._v("settings: " + _vm._s(_vm.profile.user.name))])
+          _c("div", { staticClass: "col mx-auto mt-3" }, [
+            _c("h1", [
+              _vm._v("Settings for: " + _vm._s(_vm.profile.user.name))
+            ]),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                attrs: { enctype: "multipart/form-data" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.saveChanges($event)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "bgImg" } }, [
+                    _vm._v("Background Image:")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control-file",
+                    attrs: { type: "file", id: "bgImg" },
+                    on: { change: _vm.imageChange }
+                  })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+                  [_vm._v("Submit")]
+                )
+              ]
+            )
+          ])
         ])
       : _c(
           "div",
