@@ -2,12 +2,20 @@
   <div class="profile">
     <div v-if="profile">
       <div>
-        <ul>
-          <h1>Profile</h1>
-          <li v-for="(col, i) in profile" :key="i">
-            {{ col }}
-          </li>
-        </ul>
+        <h1>Profile: {{ profile.user.name }}</h1>
+
+        <div>
+          <h2>bg image</h2>
+          <img :src="`img/${profile.bgImg}`" class="w-100" alt="bgImage" />
+        </div>
+        <div>
+          <h2>prof imafe</h2>
+          <img :src="`img/${profile.profImg}`" class="w-100" alt="profImage" />
+        </div>
+        <div>
+          <h2>description</h2>
+          <p>{{ profile.description }}</p>
+        </div>
       </div>
     </div>
     <div

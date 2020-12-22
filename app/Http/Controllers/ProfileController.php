@@ -95,6 +95,33 @@ class ProfileController extends Controller
             ]);
         }
 
+        if ($request->profImg) {
+            $exploded = explode(',', $request->profImg);
+            $decoded = base64_decode($exploded[1]);
+
+            if (str_contains($exploded[0], 'jpeg')) {
+                $extension = 'jpg';
+            } else {
+                $extension = 'png';
+            }
+
+            $fileName = Str::random() . '.' . $extension;
+
+            $path = public_path() . '/img/' . $fileName;
+
+            file_put_contents($path, $decoded);
+
+            $profile->update([
+                'profImg' => $fileName,
+            ]);
+        }
+
+        if ($request->description) {
+            $profile->update([
+                'description' => $request->description,
+            ]);
+        }
+
         return $profile;
     }
 

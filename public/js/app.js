@@ -2135,6 +2135,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Profile",
   data: function data() {
@@ -2215,11 +2223,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Settings",
   data: function data() {
     return {
-      profile: null
+      profile: null,
+      editedProfile: {}
     };
   },
   methods: {
@@ -2227,24 +2254,40 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("/api/profiles/".concat(id)).then(function (res) {
-        return _this.profile = res.data;
+        _this.profile = res.data;
+        _this.editedProfile.id = _this.profile.id;
+        _this.editedProfile.user_id = _this.profile.user_id;
       })["catch"](function (err) {
         return console.log(err);
       });
     },
-    imageChange: function imageChange(e) {
+    profImageChanged: function profImageChanged(e) {
       var _this2 = this;
 
       var fileReader = new FileReader();
       fileReader.readAsDataURL(e.target.files[0]);
 
       fileReader.onload = function (e) {
-        _this2.profile.bgImg = e.target.result;
+        _this2.editedProfile.profImg = e.target.result;
+      };
+    },
+    bgImageChanged: function bgImageChanged(e) {
+      var _this3 = this;
+
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[0]);
+
+      fileReader.onload = function (e) {
+        _this3.editedProfile.bgImg = e.target.result;
       };
     },
     saveChanges: function saveChanges() {
-      axios.put("/api/profiles/".concat(this.profile.id), this.profile).then(function (res) {
-        return console.log(res);
+      var _this4 = this;
+
+      axios.put("/api/profiles/".concat(this.profile.id), this.editedProfile).then(function (res) {
+        return _this4.$router.push({
+          path: "/".concat(_this4.profile.user.name)
+        });
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -38155,19 +38198,31 @@ var render = function() {
     _vm.profile
       ? _c("div", [
           _c("div", [
-            _c(
-              "ul",
-              [
-                _c("h1", [_vm._v("Profile")]),
-                _vm._v(" "),
-                _vm._l(_vm.profile, function(col, i) {
-                  return _c("li", { key: i }, [
-                    _vm._v("\n          " + _vm._s(col) + "\n        ")
-                  ])
-                })
-              ],
-              2
-            )
+            _c("h1", [_vm._v("Profile: " + _vm._s(_vm.profile.user.name))]),
+            _vm._v(" "),
+            _c("div", [
+              _c("h2", [_vm._v("bg image")]),
+              _vm._v(" "),
+              _c("img", {
+                staticClass: "w-100",
+                attrs: { src: "img/" + _vm.profile.bgImg, alt: "bgImage" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c("h2", [_vm._v("prof imafe")]),
+              _vm._v(" "),
+              _c("img", {
+                staticClass: "w-100",
+                attrs: { src: "img/" + _vm.profile.profImg, alt: "profImage" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", [
+              _c("h2", [_vm._v("description")]),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(_vm.profile.description))])
+            ])
           ])
         ])
       : _c(
@@ -38241,14 +38296,58 @@ var render = function() {
                   _c("input", {
                     staticClass: "form-control-file",
                     attrs: { type: "file", id: "bgImg" },
-                    on: { change: _vm.imageChange }
+                    on: { change: _vm.bgImageChanged }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "profImage" } }, [
+                    _vm._v("Profile Image:")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    staticClass: "form-control-file",
+                    attrs: { type: "file", id: "profImage" },
+                    on: { change: _vm.profImageChanged }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "desc" } }, [
+                    _vm._v("Description:")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.editedProfile.description,
+                        expression: "editedProfile.description"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", id: "desc" },
+                    domProps: { value: _vm.editedProfile.description },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.editedProfile,
+                          "description",
+                          $event.target.value
+                        )
+                      }
+                    }
                   })
                 ]),
                 _vm._v(" "),
                 _c(
                   "button",
-                  { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-                  [_vm._v("Submit")]
+                  { staticClass: "btn btn-success", attrs: { type: "submit" } },
+                  [_vm._v("Save changes")]
                 )
               ]
             )

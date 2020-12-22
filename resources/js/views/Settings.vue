@@ -11,10 +11,28 @@
               type="file"
               class="form-control-file"
               id="bgImg"
-              @change="imageChange"
+              @change="bgImageChanged"
             />
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="form-group">
+            <label for="profImage">Profile Image:</label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="profImage"
+              @change="profImageChanged"
+            />
+          </div>
+          <div class="form-group">
+            <label for="desc">Description:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="desc"
+              v-model="editedProfile.description"
+            />
+          </div>
+          <button type="submit" class="btn btn-success">Save changes</button>
         </form>
       </div>
     </div>
@@ -36,7 +54,8 @@
 
     data() {
       return {
-        profile: null
+        profile: null,
+        editedProfile: {}
       };
     },
 
@@ -44,24 +63,42 @@
       getProfile: function(id) {
         axios
           .get(`/api/profiles/${id}`)
-          .then(res => (this.profile = res.data))
+          .then(res => {
+            this.profile = res.data;
+            this.editedProfile.id = this.profile.id;
+            this.editedProfile.user_id = this.profile.user_id;
+          })
           .catch(err => console.log(err));
       },
 
-      imageChange: function(e) {
+      profImageChanged: function(e) {
         let fileReader = new FileReader();
 
         fileReader.readAsDataURL(e.target.files[0]);
 
         fileReader.onload = e => {
-          this.profile.bgImg = e.target.result;
+          this.editedProfile.profImg = e.target.result;
+        };
+      },
+
+      bgImageChanged: function(e) {
+        let fileReader = new FileReader();
+
+        fileReader.readAsDataURL(e.target.files[0]);
+
+        fileReader.onload = e => {
+          this.editedProfile.bgImg = e.target.result;
         };
       },
 
       saveChanges: function() {
         axios
-          .put(`/api/profiles/${this.profile.id}`, this.profile)
-          .then(res => console.log(res))
+          .put(`/api/profiles/${this.profile.id}`, this.editedProfile)
+          .then(res =>
+            this.$router.push({
+              path: `/${this.profile.user.name}`
+            })
+          )
           .catch(err => console.log(err));
       }
     },
