@@ -1,21 +1,22 @@
 <template>
   <div class="profile">
     <div v-if="profile">
-      <div>
-        <h1>Profile: {{ profile.user.name }}</h1>
-
-        <div>
-          <h2>bg image</h2>
-          <img :src="`img/${profile.bgImg}`" class="w-100" alt="bgImage" />
+      <div class="p-2">
+        <div
+          class="background position-relative rounded"
+          :style="`background-image: url('img/${profile.bgImg}')`"
+        >
+          <img
+            class="rounded-circle profileImg"
+            height="150px"
+            :src="`img/${profile.profImg}`"
+            alt="profImage"
+          />
         </div>
-        <div>
-          <h2>prof imafe</h2>
-          <img :src="`img/${profile.profImg}`" class="w-100" alt="profImage" />
-        </div>
-        <div>
-          <h2>description</h2>
+        <div class="col-6 mx-auto text-center mt-5">
           <p>{{ profile.description }}</p>
         </div>
+        <hr />
       </div>
     </div>
     <div
@@ -65,9 +66,25 @@
 
     created() {
       this.getProfiles(this.$route.params.slug);
+      this.$emit("profile", false);
     }
   };
 </script>
 
-<style>
+<style scoped>
+.background {
+  height: 400px;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.profileImg {
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 10px 10px 50px 3px #666;
+}
 </style>

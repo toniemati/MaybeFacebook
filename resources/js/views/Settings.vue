@@ -25,12 +25,14 @@
           </div>
           <div class="form-group">
             <label for="desc">Description:</label>
-            <input
+            <textarea
               type="text"
               class="form-control"
               id="desc"
-              v-model="editedProfile.description"
-            />
+              rows="3"
+              v-model="profile.description"
+              @change="descChanged"
+            ></textarea>
           </div>
           <button type="submit" class="btn btn-success">Save changes</button>
         </form>
@@ -91,7 +93,12 @@
         };
       },
 
+      descChanged: function(e) {
+        this.editedProfile.description = this.profile.description;
+      },
+
       saveChanges: function() {
+        // console.log(this.editedProfile);
         axios
           .put(`/api/profiles/${this.profile.id}`, this.editedProfile)
           .then(res =>
@@ -105,9 +112,13 @@
 
     created() {
       this.getProfile(this.$route.params.id);
+      this.$emit("profile", false);
     }
   };
 </script>
 
-<style>
+<style scoped>
+textarea {
+  resize: none;
+}
 </style>

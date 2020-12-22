@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
 {
@@ -93,6 +95,9 @@ class ProfileController extends Controller
             $profile->update([
                 'bgImg' => $fileName,
             ]);
+
+            $image = Image::make(public_path('img/' . $profile->bgImg))->fit(1680, 1050);
+            $image->save();
         }
 
         if ($request->profImg) {
@@ -114,6 +119,9 @@ class ProfileController extends Controller
             $profile->update([
                 'profImg' => $fileName,
             ]);
+
+            $image = Image::make(public_path('img/') . $profile->profImg)->fit(300, 300);
+            $image->save();
         }
 
         if ($request->description) {

@@ -3,9 +3,9 @@
     <div v-if="profile">
       <Nav :profile="profile" />
       <div class="row">
-        <div class="col-3">leftside</div>
-        <div class="col-6">
-          <router-view></router-view>
+        <div v-if="showLeft" class="col-3">leftside</div>
+        <div :class="{ 'col-6': showLeft, 'col-9': !showLeft }">
+          <router-view @profile="showLeftSide"></router-view>
         </div>
         <div class="col-3">contacts</div>
       </div>
@@ -36,7 +36,8 @@
 
     data() {
       return {
-        profile: null
+        profile: null,
+        showLeft: false
       };
     },
 
@@ -46,10 +47,15 @@
           .get(`/api/profiles/${this.auth.id}`)
           .then(res => (this.profile = res.data))
           .catch(err => console.log(err));
+      },
+
+      showLeftSide: function(arg) {
+        this.showLeft = arg;
       }
     },
 
     created() {
+      this.showLeftSide(false);
       this.getProfile(this.auth.id);
     },
 
