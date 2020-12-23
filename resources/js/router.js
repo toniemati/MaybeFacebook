@@ -7,6 +7,7 @@ import Home from './views/Home.vue';
 import Profile from './views/profile/Profile.vue';
 import Settings from './views/profile/Settings.vue';
 import AddPost from './views/post/AddPost.vue';
+import EditPost from './views/post/EditPost.vue';
 
 export default new VueRouter({
     mode: 'history',
@@ -15,6 +16,7 @@ export default new VueRouter({
         { path: '/:slug', name: 'Profile', component: Profile },
         { path: '/settings/:id', name: 'Settings', component: Settings },
         { path: '/addpost/:id', name: 'AddPost', component: AddPost },
+        { path: '/:slug/post/:id', name: 'EditPost', component: EditPost },
         { path: '*', redirect: '/' }
     ]
 });

@@ -30,24 +30,13 @@
             <h4>Posty {{ profile.user.name }}</h4>
           </div>
           <div v-if="profile.posts.length">
-            <div
-              v-for="(post, idx) in profile.posts"
+            <Post
+              v-for="(post, idx) in descPosts"
               :key="idx"
-              class="card col-8 mx-auto p-2 mt-3"
-            >
-              <img
-                v-if="post.img"
-                class="card-img-top"
-                :src="`img/${post.img}`"
-                alt="Post image"
-              />
-              <div class="card-body">
-                <p class="card-text">
-                  {{ post.description }}
-                </p>
-                <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-              </div>
-            </div>
+              :post="post"
+              :owner="owner"
+              :slug="slug"
+            />
           </div>
           <div class="text-center mt-5" v-else>
             <h3>{{ profile.user.name }} nie posiada jeszcze żadnych postów.</h3>
@@ -68,6 +57,7 @@
 </template>
 
 <script>
+  import Post from "../../components/Post";
   export default {
     name: "Profile",
 
@@ -76,6 +66,8 @@
     data() {
       return {
         profile: null,
+        descPosts: null,
+        slug: null,
         owner: false
       };
     },
@@ -101,6 +93,7 @@
           .then(res => {
             this.profile = res.data;
             this.checkAuth();
+            this.sortPosts();
           })
           .catch(err => console.log(err));
       },
@@ -109,13 +102,22 @@
         if (this.profile.user.id === this.auth.id) {
           this.owner = true;
         }
+      },
+
+      sortPosts: function() {
+        this.descPosts = this.profile.posts;
+        this.descPosts.sort();
+        this.descPosts.reverse();
       }
     },
 
     created() {
       this.getProfiles(this.$route.params.slug);
       this.$emit("profile", false);
-    }
+      this.slug = this.$route.params.slug;
+    },
+
+    components: { Post }
   };
 </script>
 

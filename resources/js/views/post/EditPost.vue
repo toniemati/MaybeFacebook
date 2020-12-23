@@ -1,16 +1,17 @@
 <template>
-  <div class="addpost">
-    <div v-if="profile">
+  <div class="editpost">
+    <div v-if="post">
       <div class="col mx-auto mt-3">
-        <h1>Settings for: {{ profile.user.name }}</h1>
+        <h1>Editing post</h1>
 
-        <form @submit.prevent="addPost" enctype="multipart/form-data">
+        <form @submit.prevent="updatePost" enctype="multipart/form-data">
           <div class="form-group">
             <label for="desc">Description:</label>
             <textarea
               class="form-control"
               id="desc"
               rows="4"
+              v-model="post.description"
               @change="descChange"
             ></textarea>
           </div>
@@ -23,7 +24,16 @@
               @change="imgChange"
             />
           </div>
-          <button type="submit" class="btn btn-success">Add post</button>
+          <div class="form-group d-flex justify-content-around mt-5">
+            <button
+              type="button"
+              @click="deletePost(post.id)"
+              class="btn btn-danger"
+            >
+              Usuń
+            </button>
+            <button type="submit" class="btn btn-warning">Zapisz zmiany</button>
+          </div>
         </form>
       </div>
     </div>
@@ -42,39 +52,31 @@
 
 <script>
   export default {
-    name: "AddPost",
-
+    name: "EditPost",
     props: ["auth"],
-
     data() {
       return {
-        profile: null,
-        post: {}
+        post: null
       };
     },
-
     methods: {
-      getProfile: function(id) {
+      checkAuth: function() {
+        if (this.auth.name !== this.$route.params.slug) {
+          this.$router.push({ path: `/${this.$route.params.slug}` });
+        }
+      },
+      getPost: function(id) {
         axios
-          .get(`/api/profiles/${id}`)
+          .get(`/api/posts/${id}`)
           .then(res => {
-            this.profile = res.data;
-            this.checkAuth(id);
-            this.post.profile_id = id;
+            this.post = res.data;
+            this.post.img = null;
           })
           .catch(err => console.log(err));
       },
-
-      checkAuth: function(id) {
-        if (this.auth.id !== this.profile.user_id) {
-          this.$router.push({ path: `/${this.profile.user.name}` });
-        }
-      },
-
       descChange: function(e) {
         this.post.description = e.target.value;
       },
-
       imgChange: function(e) {
         let fileReader = new FileReader();
 
@@ -84,19 +86,26 @@
           this.post.img = e.target.result;
         };
       },
-
-      addPost: function() {
+      updatePost: function() {
         axios
-          .post("/api/posts", this.post)
+          .put(`/api/posts/${this.post.id}`, this.post)
           .then(res => {
-            this.$router.push({ path: `/${this.profile.user.name}` });
+            this.$router.push({ path: `/${this.$route.params.slug}` });
+          })
+          .catch(err => console.log(err));
+      },
+      deletePost: function(id) {
+        axios
+          .delete(`/api/posts/${id}`)
+          .then(res => {
+            this.$router.push({ path: `/${this.post.profile.user.name}` });
           })
           .catch(err => console.log(err));
       }
     },
-
     created() {
-      this.getProfile(this.$route.params.id);
+      this.checkAuth();
+      this.getPost(this.$route.params.id);
     }
   };
 </script>

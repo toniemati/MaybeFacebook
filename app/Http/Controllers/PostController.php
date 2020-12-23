@@ -108,14 +108,33 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         if ($request->img) {
-        }
+            $exploded = explode(',', $request->img);
+            $decoded = base64_decode($exploded[1]);
 
-        if ($request->description) {
+            if (str_contains($exploded[0], 'jpeg')) {
+                $extension = 'jpg';
+            } else {
+                $extension = 'png';
+            }
+
+            $fileName = Str::random() . '.' . $extension;
+
+            $path = public_path() . '/img/' . $fileName;
+
+            file_put_contents($path, $decoded);
+
+            $post->update([
+                'img' => $fileName,
+                'description' => $request->description
+            ]);
+
+            $image = Image::make(public_path('img/') . $post->img)->fit(800, 600);
+            $image->save();
+        } else {
             $post->update([
                 'description' => $request->description
             ]);
         }
-        $post->profile->user;
 
         return $post;
     }

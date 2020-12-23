@@ -107,7 +107,6 @@
       },
 
       saveChanges: function() {
-        // console.log(this.editedProfile);
         axios
           .put(`/api/profiles/${this.profile.id}`, this.editedProfile)
           .then(res =>
