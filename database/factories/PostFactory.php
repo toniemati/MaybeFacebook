@@ -23,7 +23,7 @@ class PostFactory extends Factory
     {
         return [
             'profile_id' => rand(1, 5),
-            'img' => $this->faker->imageUrl(),
+            'img' => null,
             'description' => $this->faker->sentence()
         ];
     }

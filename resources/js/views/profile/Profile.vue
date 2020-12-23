@@ -19,7 +19,10 @@
         <hr />
         <div>
           <div class="text-center" v-if="owner">
-            <router-link class="btn btn-outline-primary" to="#">
+            <router-link
+              class="btn btn-outline-primary"
+              :to="`/addpost/${profile.id}`"
+            >
               Dodaj nowy post
             </router-link>
           </div>
@@ -32,11 +35,15 @@
               :key="idx"
               class="card col-8 mx-auto p-2 mt-3"
             >
-              <img class="card-img-top" :src="post.img" alt="Post image" />
+              <img
+                v-if="post.img"
+                class="card-img-top"
+                :src="`img/${post.img}`"
+                alt="Post image"
+              />
               <div class="card-body">
                 <p class="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  {{ post.description }}
                 </p>
                 <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
               </div>

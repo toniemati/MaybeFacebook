@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PostController extends Controller
 {
@@ -37,7 +40,38 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $profile = Profile::findOrFail($request->profile_id);
+
+        if ($request->img) {
+            $exploded = explode(',', $request->img);
+            $decoded = base64_decode($exploded[1]);
+
+            if (str_contains($exploded[0], 'jpeg')) {
+                $extension = 'jpg';
+            } else {
+                $extension = 'png';
+            }
+
+            $fileName = Str::random() . '.' . $extension;
+
+            $path = public_path() . '/img/' . $fileName;
+
+            file_put_contents($path, $decoded);
+
+            $post = $profile->posts()->create([
+                'img' => $fileName,
+                'description' => $request->description
+            ]);
+
+            $image = Image::make(public_path('img/') . $post->img)->fit(800, 600);
+            $image->save();
+        } else {
+            $post = $profile->posts()->create([
+                'description' => $request->description
+            ]);
+        }
+
+        return $post;
     }
 
     /**
