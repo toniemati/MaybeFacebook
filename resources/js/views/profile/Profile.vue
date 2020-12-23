@@ -17,6 +17,35 @@
           <p>{{ profile.description }}</p>
         </div>
         <hr />
+        <div>
+          <div class="text-center" v-if="owner">
+            <router-link class="btn btn-outline-primary" to="#">
+              Dodaj nowy post
+            </router-link>
+          </div>
+          <div class="text-center" v-else>
+            <h4>Posty {{ profile.user.name }}</h4>
+          </div>
+          <div v-if="profile.posts.length">
+            <div
+              v-for="(post, idx) in profile.posts"
+              :key="idx"
+              class="card col-8 mx-auto p-2 mt-3"
+            >
+              <img class="card-img-top" :src="post.img" alt="Post image" />
+              <div class="card-body">
+                <p class="card-text">
+                  Some quick example text to build on the card title and make up
+                  the bulk of the card's content.
+                </p>
+                <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-5" v-else>
+            <h3>{{ profile.user.name }} nie posiada jeszcze żadnych postów.</h3>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -35,9 +64,12 @@
   export default {
     name: "Profile",
 
+    props: ["auth"],
+
     data() {
       return {
-        profile: null
+        profile: null,
+        owner: false
       };
     },
 
@@ -59,8 +91,17 @@
       getProfile: function(id) {
         axios
           .get(`/api/profiles/${id}`)
-          .then(res => (this.profile = res.data))
+          .then(res => {
+            this.profile = res.data;
+            this.checkAuth();
+          })
           .catch(err => console.log(err));
+      },
+
+      checkAuth: function() {
+        if (this.profile.user.id === this.auth.id) {
+          this.owner = true;
+        }
       }
     },
 

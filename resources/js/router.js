@@ -4,8 +4,8 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import Home from './views/Home.vue';
-import Profile from './views/Profile.vue';
-import Settings from './views/Settings.vue';
+import Profile from './views/profile/Profile.vue';
+import Settings from './views/profile/Settings.vue';
 
 export default new VueRouter({
     mode: 'history',
@@ -13,6 +13,7 @@ export default new VueRouter({
         { path: '/', name: 'Home', component: Home },
         { path: '/:slug', name: 'Profile', component: Profile },
         { path: '/settings/:id', name: 'Settings', component: Settings },
+        { path: '*', redirect: '/' }
     ]
 });
 

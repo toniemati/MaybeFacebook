@@ -54,6 +54,8 @@
   export default {
     name: "Settings",
 
+    props: ["auth"],
+
     data() {
       return {
         profile: null,
@@ -67,6 +69,7 @@
           .get(`/api/profiles/${id}`)
           .then(res => {
             this.profile = res.data;
+            this.checkAuth();
             this.editedProfile.id = this.profile.id;
             this.editedProfile.user_id = this.profile.user_id;
           })
@@ -95,6 +98,12 @@
 
       descChanged: function(e) {
         this.editedProfile.description = this.profile.description;
+      },
+
+      checkAuth: function() {
+        if (this.profile.user.id !== this.auth.id) {
+          this.$router.push({ path: `/${this.profile.user.name}` });
+        }
       },
 
       saveChanges: function() {

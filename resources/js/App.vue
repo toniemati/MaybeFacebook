@@ -5,7 +5,7 @@
       <div class="row">
         <div v-if="showLeft" class="col-3">leftside</div>
         <div :class="{ 'col-6': showLeft, 'col-9': !showLeft }">
-          <router-view @profile="showLeftSide"></router-view>
+          <router-view @profile="showLeftSide" :auth="auth"></router-view>
         </div>
         <div class="col-3">contacts</div>
       </div>

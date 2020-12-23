@@ -5,19 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model
+class Post extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function user()
+    public function profile()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
+        return $this->belongsTo(Profile::class);
     }
 }

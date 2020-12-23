@@ -17,7 +17,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $profiles = Profile::with('user')->get();
+        $profiles = Profile::with(['user', 'posts'])->get();
 
         return $profiles;
     }
@@ -52,6 +52,7 @@ class ProfileController extends Controller
     public function show(Profile $profile)
     {
         $profile->user;
+        $profile->posts;
 
         return $profile;
     }
