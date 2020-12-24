@@ -12,6 +12,12 @@
             :src="`img/${profile.profImg}`"
             alt="profImage"
           />
+          <FriendButton
+            v-if="!owner"
+            class="btn btn-outline-info friend"
+            :authID="auth.id"
+            :userID="profile.id"
+          />
         </div>
         <div class="col-6 mx-auto text-center mt-5">
           <p>{{ profile.description }}</p>
@@ -57,6 +63,7 @@
 </template>
 
 <script>
+  import FriendButton from "../../components/FriendButton";
   import Post from "../../components/Post";
   export default {
     name: "Profile",
@@ -117,7 +124,7 @@
       this.slug = this.$route.params.slug;
     },
 
-    components: { Post }
+    components: { Post, FriendButton }
   };
 </script>
 
@@ -136,5 +143,12 @@
   left: 50%;
   transform: translateX(-50%);
   box-shadow: 10px 10px 50px 3px #666;
+}
+
+.friend {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 10px;
 }
 </style>

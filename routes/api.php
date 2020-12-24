@@ -21,3 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('profiles', App\Http\COntrollers\ProfileController::class);
 
 Route::resource('posts', App\Http\Controllers\PostController::class);
+
+Route::post('/{id}/addfriend/{user}', [App\Http\Controllers\FriendController::class, 'store']);
+Route::get('/{id}/status/{user}', [App\Http\Controllers\FriendController::class, 'status']);

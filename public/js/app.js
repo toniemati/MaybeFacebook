@@ -1973,6 +1973,60 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FriendButton.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/FriendButton.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "FollowButton",
+  props: ["authID", "userID"],
+  data: function data() {
+    return {
+      status: null,
+      buttonText: null
+    };
+  },
+  methods: {
+    getStatus: function getStatus() {
+      var _this = this;
+
+      axios.get("/api/".concat(this.authID, "/status/").concat(this.userID)).then(function (res) {
+        _this.status = res.data;
+
+        _this.setButtonText();
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    addFriend: function addFriend() {
+      var _this2 = this;
+
+      axios.post("/api/".concat(this.authID, "/addfriend/").concat(this.userID)).then(function (res) {
+        _this2.getStatus();
+      })["catch"](function (err) {
+        return console.log(err);
+      });
+    },
+    setButtonText: function setButtonText() {
+      this.buttonText = this.status ? "Remove friend" : "Add friend";
+    }
+  },
+  created: function created() {
+    this.getStatus();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Nav.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Nav.vue?vue&type=script&lang=js& ***!
@@ -2405,7 +2459,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_Post__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Post */ "./resources/js/components/Post.vue");
+/* harmony import */ var _components_FriendButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/FriendButton */ "./resources/js/components/FriendButton.vue");
+/* harmony import */ var _components_Post__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Post */ "./resources/js/components/Post.vue");
 //
 //
 //
@@ -2464,6 +2519,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Profile",
@@ -2521,7 +2583,8 @@ __webpack_require__.r(__webpack_exports__);
     this.slug = this.$route.params.slug;
   },
   components: {
-    Post: _components_Post__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Post: _components_Post__WEBPACK_IMPORTED_MODULE_1__["default"],
+    FriendButton: _components_FriendButton__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -7140,7 +7203,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.background[data-v-97ebee18] {\r\n  height: 400px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-repeat: no-repeat;\r\n  background-size: cover;\n}\n.profileImg[data-v-97ebee18] {\r\n  position: absolute;\r\n  bottom: -10%;\r\n  left: 50%;\r\n  transform: translateX(-50%);\r\n  box-shadow: 10px 10px 50px 3px #666;\n}\r\n", ""]);
+exports.push([module.i, "\n.background[data-v-97ebee18] {\r\n  height: 400px;\r\n  width: 100%;\r\n  background-position: center;\r\n  background-repeat: no-repeat;\r\n  background-size: cover;\n}\n.profileImg[data-v-97ebee18] {\r\n  position: absolute;\r\n  bottom: -10%;\r\n  left: 50%;\r\n  transform: translateX(-50%);\r\n  box-shadow: 10px 10px 50px 3px #666;\n}\n.friend[data-v-97ebee18] {\r\n  position: absolute;\r\n  right: 0;\r\n  bottom: 0;\r\n  margin: 10px;\n}\r\n", ""]);
 
 // exports
 
@@ -39101,6 +39164,33 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FriendButton.vue?vue&type=template&id=10246b5b&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/FriendButton.vue?vue&type=template&id=10246b5b&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("button", {
+    domProps: { textContent: _vm._s(_vm.buttonText) },
+    on: { click: _vm.addFriend }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Nav.vue?vue&type=template&id=7cd4f788&":
 /*!******************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Nav.vue?vue&type=template&id=7cd4f788& ***!
@@ -39679,8 +39769,16 @@ var render = function() {
                     src: "img/" + _vm.profile.profImg,
                     alt: "profImage"
                   }
-                })
-              ]
+                }),
+                _vm._v(" "),
+                !_vm.owner
+                  ? _c("FriendButton", {
+                      staticClass: "btn btn-outline-info friend",
+                      attrs: { authID: _vm.auth.id, userID: _vm.profile.id }
+                    })
+                  : _vm._e()
+              ],
+              1
             ),
             _vm._v(" "),
             _c("div", { staticClass: "col-6 mx-auto text-center mt-5" }, [
@@ -55270,6 +55368,75 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/FriendButton.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/FriendButton.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FriendButton_vue_vue_type_template_id_10246b5b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FriendButton.vue?vue&type=template&id=10246b5b&scoped=true& */ "./resources/js/components/FriendButton.vue?vue&type=template&id=10246b5b&scoped=true&");
+/* harmony import */ var _FriendButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FriendButton.vue?vue&type=script&lang=js& */ "./resources/js/components/FriendButton.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FriendButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FriendButton_vue_vue_type_template_id_10246b5b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FriendButton_vue_vue_type_template_id_10246b5b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "10246b5b",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/FriendButton.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/FriendButton.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/FriendButton.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FriendButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./FriendButton.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FriendButton.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FriendButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/FriendButton.vue?vue&type=template&id=10246b5b&scoped=true&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/FriendButton.vue?vue&type=template&id=10246b5b&scoped=true& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FriendButton_vue_vue_type_template_id_10246b5b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./FriendButton.vue?vue&type=template&id=10246b5b&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/FriendButton.vue?vue&type=template&id=10246b5b&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FriendButton_vue_vue_type_template_id_10246b5b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FriendButton_vue_vue_type_template_id_10246b5b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

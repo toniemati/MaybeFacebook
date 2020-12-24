@@ -20,4 +20,9 @@ class Profile extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    public function friends()
+    {
+        return $this->hasMany(User::class);
+    }
 }
