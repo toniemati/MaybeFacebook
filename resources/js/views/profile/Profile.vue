@@ -42,6 +42,7 @@
               :post="post"
               :owner="owner"
               :slug="slug"
+              width="col-8"
             />
           </div>
           <div class="text-center mt-5" v-else>

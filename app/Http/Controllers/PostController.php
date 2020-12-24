@@ -10,6 +10,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class PostController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('profile.user')->orderBy('created_at', 'desc')->get();
+        $posts = Post::with('profile.user.friends')->orderBy('created_at', 'desc')->get();
 
         return $posts;
     }
@@ -82,7 +83,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post->profile->user;
+        $post->profile->user->friends;
 
         return $post;
     }

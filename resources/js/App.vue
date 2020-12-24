@@ -2,7 +2,7 @@
   <div class="app">
     <div v-if="profile">
       <Nav :profile="profile" />
-      <div class="row">
+      <div class="row w-100">
         <div v-if="showLeft" class="col-3">leftside</div>
         <div :class="{ 'col-6': showLeft, 'col-9': !showLeft }">
           <router-view @profile="showLeftSide" :auth="auth"></router-view>
