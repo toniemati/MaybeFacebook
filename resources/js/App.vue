@@ -13,7 +13,7 @@
           </router-view>
         </div>
         <div class="col-3">
-          <FriendsList :friends="friends" />
+          <FriendsList :friends="friends" :auth="auth" />
         </div>
       </div>
     </div>

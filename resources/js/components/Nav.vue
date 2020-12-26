@@ -17,14 +17,9 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <form class="form-inline my-2 my-lg-0">
-          <input
-            class="form-control mr-sm-2 rounded"
-            type="search"
-            placeholder="Search friends"
-            aria-label="Search"
-          />
-        </form>
+        <router-link to="/searchfriends" class="btn bg-light rounded">
+          Znajdź znajomych
+        </router-link>
       </ul>
       <ul class="navbar-nav ml-auto text-center">
         <li class="nav-item dropdown rounded bg-light mx-1">

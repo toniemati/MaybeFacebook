@@ -40,11 +40,13 @@
             .get(`/api/profiles/${friend.user_id}`)
             .then(res => {
               this.friendsList.push(res.data);
-              console.log(this.friendsList);
             })
             .catch(err => console.log(err));
         });
       }
+    },
+    mounted() {
+      this.friendsList = [];
     }
   };
 </script>
