@@ -17,6 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'nickname',
         'name',
         'email',
         'password',
@@ -47,6 +48,9 @@ class User extends Authenticatable
 
         static::created(function ($user) {
             $user->profile()->create();
+            $user->profile->posts()->create([
+                'description' => 'Here is my first post!'
+            ]);
         });
     }
 

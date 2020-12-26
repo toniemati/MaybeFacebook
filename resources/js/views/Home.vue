@@ -14,12 +14,13 @@
 
     data() {
       return {
-        posts: []
+        posts: [],
+        friends: []
       };
     },
 
     methods: {
-      getPosts: function(id) {
+      getPosts: function() {
         axios
           .get(`/api/posts`)
           .then(res => {
@@ -30,25 +31,31 @@
 
       filterPosts: function(posts) {
         posts.forEach(post => {
+          console.log(post);
           if (post.profile_id === this.auth.id) {
-            let friends = post.profile.user.friends;
-
-            posts.forEach(post => {
-              friends.forEach(friend => {
-                if (post.profile_id === friend.id) {
-                  this.posts.push(post);
-                  console.log(post);
-                }
-              });
-            });
+            this.friends = post.profile.user.friends;
+            this.posts.push(post);
           }
+          this.friends.forEach(friend => {
+            if (post.profile_id === friend.id) {
+              console.log("XD");
+              this.posts.push(post);
+            }
+          });
+        });
+        this.sortPosts();
+      },
+
+      sortPosts: function() {
+        this.posts.sort((a, b) => {
+          return a.created_at > b.created_at ? -1 : 1;
         });
       }
     },
 
     created() {
       this.$emit("profile", true);
-      this.getPosts(this.auth.id);
+      this.getPosts();
     },
 
     components: { Post }

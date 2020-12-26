@@ -2,7 +2,7 @@
   <div class="settings">
     <div v-if="profile">
       <div class="col mx-auto mt-3">
-        <h1>Settings for: {{ profile.user.name }}</h1>
+        <h1>Settings for: {{ profile.user.nickname }}</h1>
 
         <form @submit.prevent="saveChanges" enctype="multipart/form-data">
           <div class="form-group">
@@ -102,7 +102,7 @@
 
       checkAuth: function() {
         if (this.profile.user.id !== this.auth.id) {
-          this.$router.push({ path: `/${this.profile.user.name}` });
+          this.$router.push({ path: `/${this.profile.user.nickname}` });
         }
       },
 
@@ -111,7 +111,7 @@
           .put(`/api/profiles/${this.profile.id}`, this.editedProfile)
           .then(res =>
             this.$router.push({
-              path: `/${this.profile.user.name}`
+              path: `/${this.profile.user.nickname}`
             })
           )
           .catch(err => console.log(err));

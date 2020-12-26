@@ -67,7 +67,7 @@
 
       checkAuth: function(id) {
         if (this.auth.id !== this.profile.user_id) {
-          this.$router.push({ path: `/${this.profile.user.name}` });
+          this.$router.push({ path: `/${this.profile.user.username}` });
         }
       },
 
@@ -89,7 +89,7 @@
         axios
           .post("/api/posts", this.post)
           .then(res => {
-            this.$router.push({ path: `/${this.profile.user.name}` });
+            this.$router.push({ path: `/${this.profile.user.nickname}` });
           })
           .catch(err => console.log(err));
       }

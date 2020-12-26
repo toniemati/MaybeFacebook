@@ -148,8 +148,13 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        $post->delete();
+        $num = count($post->profile->posts);
 
-        return $post;
+        if ($num == 1) {
+            return response("Na profilu musi pozostać co najmniej jeden post.");
+        } else {
+            $post->delete();
+            return response('Usunięto post.');
+        }
     }
 }

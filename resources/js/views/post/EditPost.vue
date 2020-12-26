@@ -61,7 +61,7 @@
     },
     methods: {
       checkAuth: function() {
-        if (this.auth.name !== this.$route.params.slug) {
+        if (this.auth.id !== this.post.profile_id) {
           this.$router.push({ path: `/${this.$route.params.slug}` });
         }
       },
@@ -71,6 +71,7 @@
           .then(res => {
             this.post = res.data;
             this.post.img = null;
+            this.checkAuth();
           })
           .catch(err => console.log(err));
       },
@@ -98,13 +99,13 @@
         axios
           .delete(`/api/posts/${id}`)
           .then(res => {
-            this.$router.push({ path: `/${this.post.profile.user.name}` });
+            alert(res.data);
+            this.$router.push({ path: `/${this.post.profile.user.nickname}` });
           })
           .catch(err => console.log(err));
       }
     },
     created() {
-      this.checkAuth();
       this.getPost(this.$route.params.id);
     }
   };

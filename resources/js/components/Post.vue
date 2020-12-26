@@ -7,7 +7,7 @@
         alt="profile img"
       />
       <div>
-        <router-link :to="`/${post.profile.user.name}`">
+        <router-link :to="`/${post.profile.user.nickname}`">
           {{ post.profile.user.name }}
         </router-link>
       </div>

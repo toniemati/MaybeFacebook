@@ -37,10 +37,10 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {{ profile.user.name }}
+            {{ profile.user.nickname }}
           </router-link>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <router-link class="dropdown-item" :to="`/${profile.user.name}`"
+            <router-link class="dropdown-item" :to="`/${profile.user.nickname}`"
               >Zobacz swój profil
             </router-link>
             <router-link class="dropdown-item" :to="`/settings/${profile.id}`">

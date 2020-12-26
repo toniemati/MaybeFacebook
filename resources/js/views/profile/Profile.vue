@@ -74,6 +74,7 @@
     data() {
       return {
         profile: null,
+        profiles: null,
         descPosts: null,
         slug: null,
         owner: false
@@ -85,9 +86,10 @@
         axios
           .get("/api/profiles")
           .then(res => {
-            let profiles = res.data;
-            profiles.forEach(profil => {
-              if (profil.user.name == slug) {
+            this.profiles = res.data;
+
+            this.profiles.forEach(profil => {
+              if (profil.user.nickname === slug) {
                 this.getProfile(profil.id);
               }
             });

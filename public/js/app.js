@@ -2217,11 +2217,12 @@ __webpack_require__.r(__webpack_exports__);
   props: ["auth"],
   data: function data() {
     return {
-      posts: []
+      posts: [],
+      friends: []
     };
   },
   methods: {
-    getPosts: function getPosts(id) {
+    getPosts: function getPosts() {
       var _this = this;
 
       axios.get("/api/posts").then(function (res) {
@@ -2234,24 +2235,33 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       posts.forEach(function (post) {
-        if (post.profile_id === _this2.auth.id) {
-          var friends = post.profile.user.friends;
-          posts.forEach(function (post) {
-            friends.forEach(function (friend) {
-              if (post.profile_id === friend.id) {
-                _this2.posts.push(post);
+        console.log(post);
 
-                console.log(post);
-              }
-            });
-          });
+        if (post.profile_id === _this2.auth.id) {
+          _this2.friends = post.profile.user.friends;
+
+          _this2.posts.push(post);
         }
+
+        _this2.friends.forEach(function (friend) {
+          if (post.profile_id === friend.id) {
+            console.log("XD");
+
+            _this2.posts.push(post);
+          }
+        });
+      });
+      this.sortPosts();
+    },
+    sortPosts: function sortPosts() {
+      this.posts.sort(function (a, b) {
+        return a.created_at > b.created_at ? -1 : 1;
       });
     }
   },
   created: function created() {
     this.$emit("profile", true);
-    this.getPosts(this.auth.id);
+    this.getPosts();
   },
   components: {
     Post: _components_Post__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -2337,7 +2347,7 @@ __webpack_require__.r(__webpack_exports__);
     checkAuth: function checkAuth(id) {
       if (this.auth.id !== this.profile.user_id) {
         this.$router.push({
-          path: "/".concat(this.profile.user.name)
+          path: "/".concat(this.profile.user.username)
         });
       }
     },
@@ -2359,7 +2369,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post("/api/posts", this.post).then(function (res) {
         _this3.$router.push({
-          path: "/".concat(_this3.profile.user.name)
+          path: "/".concat(_this3.profile.user.nickname)
         });
       })["catch"](function (err) {
         return console.log(err);
@@ -2444,7 +2454,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     checkAuth: function checkAuth() {
-      if (this.auth.name !== this.$route.params.slug) {
+      if (this.auth.id !== this.post.profile_id) {
         this.$router.push({
           path: "/".concat(this.$route.params.slug)
         });
@@ -2456,6 +2466,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("/api/posts/".concat(id)).then(function (res) {
         _this.post = res.data;
         _this.post.img = null;
+
+        _this.checkAuth();
       })["catch"](function (err) {
         return console.log(err);
       });
@@ -2488,8 +2500,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       axios["delete"]("/api/posts/".concat(id)).then(function (res) {
+        alert(res.data);
+
         _this4.$router.push({
-          path: "/".concat(_this4.post.profile.user.name)
+          path: "/".concat(_this4.post.profile.user.nickname)
         });
       })["catch"](function (err) {
         return console.log(err);
@@ -2497,7 +2511,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.checkAuth();
     this.getPost(this.$route.params.id);
   }
 });
@@ -2588,6 +2601,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       profile: null,
+      profiles: null,
       descPosts: null,
       slug: null,
       owner: false
@@ -2598,9 +2612,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("/api/profiles").then(function (res) {
-        var profiles = res.data;
-        profiles.forEach(function (profil) {
-          if (profil.user.name == slug) {
+        _this.profiles = res.data;
+
+        _this.profiles.forEach(function (profil) {
+          if (profil.user.nickname === slug) {
             _this.getProfile(profil.id);
           }
         });
@@ -2756,7 +2771,7 @@ __webpack_require__.r(__webpack_exports__);
     checkAuth: function checkAuth() {
       if (this.profile.user.id !== this.auth.id) {
         this.$router.push({
-          path: "/".concat(this.profile.user.name)
+          path: "/".concat(this.profile.user.nickname)
         });
       }
     },
@@ -2765,7 +2780,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.put("/api/profiles/".concat(this.profile.id), this.editedProfile).then(function (res) {
         return _this4.$router.push({
-          path: "/".concat(_this4.profile.user.name)
+          path: "/".concat(_this4.profile.user.nickname)
         });
       })["catch"](function (err) {
         return console.log(err);
@@ -39356,7 +39371,7 @@ var render = function() {
                   [
                     _vm._v(
                       "\n          " +
-                        _vm._s(_vm.profile.user.name) +
+                        _vm._s(_vm.profile.user.nickname) +
                         "\n        "
                     )
                   ]
@@ -39373,7 +39388,7 @@ var render = function() {
                       "router-link",
                       {
                         staticClass: "dropdown-item",
-                        attrs: { to: "/" + _vm.profile.user.name }
+                        attrs: { to: "/" + _vm.profile.user.nickname }
                       },
                       [_vm._v("Zobacz swój profil\n          ")]
                     ),
@@ -39558,7 +39573,7 @@ var render = function() {
             [
               _c(
                 "router-link",
-                { attrs: { to: "/" + _vm.post.profile.user.name } },
+                { attrs: { to: "/" + _vm.post.profile.user.nickname } },
                 [
                   _vm._v(
                     "\n        " +
@@ -40021,7 +40036,7 @@ var render = function() {
       ? _c("div", [
           _c("div", { staticClass: "col mx-auto mt-3" }, [
             _c("h1", [
-              _vm._v("Settings for: " + _vm._s(_vm.profile.user.name))
+              _vm._v("Settings for: " + _vm._s(_vm.profile.user.nickname))
             ]),
             _vm._v(" "),
             _c(
