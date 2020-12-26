@@ -5,9 +5,16 @@
       <div class="row w-100">
         <div v-if="showLeft" class="col-3">leftside</div>
         <div :class="{ 'col-6': showLeft, 'col-9': !showLeft }">
-          <router-view @profile="showLeftSide" :auth="auth"></router-view>
+          <router-view
+            @profile="showLeftSide"
+            :auth="auth"
+            @friends="getFriends"
+          >
+          </router-view>
         </div>
-        <div class="col-3">contacts</div>
+        <div class="col-3">
+          <FriendsList :friends="friends" />
+        </div>
       </div>
     </div>
     <div
@@ -23,6 +30,7 @@
 </template>
 
 <script>
+  import FriendsList from "./components/FriendsList";
   import Nav from "./components/Nav";
   export default {
     name: "App",
@@ -37,7 +45,8 @@
     data() {
       return {
         profile: null,
-        showLeft: false
+        showLeft: false,
+        friends: null
       };
     },
 
@@ -51,6 +60,10 @@
 
       showLeftSide: function(arg) {
         this.showLeft = arg;
+      },
+
+      getFriends: function(friends) {
+        this.friends = friends;
       }
     },
 
@@ -59,7 +72,7 @@
       this.getProfile(this.auth.id);
     },
 
-    components: { Nav }
+    components: { Nav, FriendsList }
   };
 </script>
 

@@ -31,18 +31,17 @@
 
       filterPosts: function(posts) {
         posts.forEach(post => {
-          console.log(post);
           if (post.profile_id === this.auth.id) {
             this.friends = post.profile.user.friends;
             this.posts.push(post);
           }
           this.friends.forEach(friend => {
-            if (post.profile_id === friend.id) {
-              console.log("XD");
+            if (post.profile_id == friend.user_id) {
               this.posts.push(post);
             }
           });
         });
+        this.$emit("friends", this.friends);
         this.sortPosts();
       },
 

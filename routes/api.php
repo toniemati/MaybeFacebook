@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('profiles', App\Http\COntrollers\ProfileController::class);
+Route::resource('profiles', App\Http\Controllers\ProfileController::class);
 
 Route::resource('posts', App\Http\Controllers\PostController::class);
 
