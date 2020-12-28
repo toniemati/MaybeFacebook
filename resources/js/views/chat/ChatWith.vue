@@ -40,7 +40,6 @@
     },
     methods: {
       getMessages: function() {
-        this.filteredMessages = [];
         axios
           .get(`/api/messages/${this.auth.id}`)
           .then(res => {
@@ -67,6 +66,7 @@
           .catch(err => console.log(err));
       },
       filterMessages: function() {
+        this.filteredMessages = [];
         this.messages.forEach(message => {
           if (
             (message.user_id === this.auth.id || message.to === this.auth.id) &&
@@ -80,15 +80,18 @@
       setMessage: function() {
         this.message.user_id = this.auth.id;
         this.message.to = this.friendId;
+        this.message.text = "";
       },
       sendMessage: function() {
-        axios
-          .post("/api/messages", this.message)
-          .then(res => {
-            this.message.text = null;
-            this.filteredMessages.push(res.data);
-          })
-          .catch(err => console.log(err));
+        if (this.message.text.length) {
+          axios
+            .post("/api/messages", this.message)
+            .then(res => {
+              this.message.text = "";
+              this.filteredMessages.push(res.data);
+            })
+            .catch(err => console.log(err));
+        }
       },
       scrollToBottom: function() {
         setTimeout(() => {
@@ -96,9 +99,8 @@
             this.$refs.feed.scrollHeight - this.$refs.feed.clientHeight;
         }, 50);
       },
-      handleIncoming: function(message) {
-        this.messages.push(message);
-        this.filterMessages();
+      handleIncoming: function() {
+        this.getMessages();
       }
     },
     watch: {
@@ -112,7 +114,7 @@
     },
     mounted() {
       Echo.private(`messages.${this.auth.id}`).listen("NewMessage", e => {
-        this.handleIncoming(e.message);
+        this.handleIncoming();
       });
     }
   };

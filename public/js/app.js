@@ -2546,7 +2546,6 @@ __webpack_require__.r(__webpack_exports__);
     getMessages: function getMessages() {
       var _this = this;
 
-      this.filteredMessages = [];
       axios.get("/api/messages/".concat(this.auth.id)).then(function (res) {
         _this.messages = res.data;
 
@@ -2579,6 +2578,7 @@ __webpack_require__.r(__webpack_exports__);
     filterMessages: function filterMessages() {
       var _this3 = this;
 
+      this.filteredMessages = [];
       this.messages.forEach(function (message) {
         if ((message.user_id === _this3.auth.id || message.to === _this3.auth.id) && (message.user_id === _this3.friendId || message.to === _this3.friendId)) {
           _this3.filteredMessages.push(message);
@@ -2589,17 +2589,20 @@ __webpack_require__.r(__webpack_exports__);
     setMessage: function setMessage() {
       this.message.user_id = this.auth.id;
       this.message.to = this.friendId;
+      this.message.text = "";
     },
     sendMessage: function sendMessage() {
       var _this4 = this;
 
-      axios.post("/api/messages", this.message).then(function (res) {
-        _this4.message.text = null;
+      if (this.message.text.length) {
+        axios.post("/api/messages", this.message).then(function (res) {
+          _this4.message.text = "";
 
-        _this4.filteredMessages.push(res.data);
-      })["catch"](function (err) {
-        return console.log(err);
-      });
+          _this4.filteredMessages.push(res.data);
+        })["catch"](function (err) {
+          return console.log(err);
+        });
+      }
     },
     scrollToBottom: function scrollToBottom() {
       var _this5 = this;
@@ -2608,9 +2611,8 @@ __webpack_require__.r(__webpack_exports__);
         _this5.$refs.feed.scrollTop = _this5.$refs.feed.scrollHeight - _this5.$refs.feed.clientHeight;
       }, 50);
     },
-    handleIncoming: function handleIncoming(message) {
-      this.messages.push(message);
-      this.filterMessages();
+    handleIncoming: function handleIncoming() {
+      this.getMessages();
     }
   },
   watch: {
@@ -2626,7 +2628,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this6 = this;
 
     Echo["private"]("messages.".concat(this.auth.id)).listen("NewMessage", function (e) {
-      _this6.handleIncoming(e.message);
+      _this6.handleIncoming();
     });
   }
 });

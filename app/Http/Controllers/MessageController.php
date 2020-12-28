@@ -85,7 +85,11 @@ class MessageController extends Controller
      */
     public function update(Request $request, Message $message)
     {
-        //
+        $message->update([
+            'read' => true,
+        ]);
+
+        return $message;
     }
 
     /**
