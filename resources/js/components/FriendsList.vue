@@ -11,9 +11,9 @@
         alt="Profile Image"
       />
       <div class="ml-3">
-        <a :href="`/${friend.user.nickname}`">
+        <router-link :to="`/${friend.user.nickname}`">
           {{ friend.user.name }}
-        </a>
+        </router-link>
       </div>
     </div>
   </div>
@@ -35,6 +35,7 @@
     },
     methods: {
       getFriends: function() {
+        this.friendsList = [];
         this.friends.forEach(friend => {
           axios
             .get(`/api/profiles/${friend.user_id}`)
@@ -44,9 +45,6 @@
             .catch(err => console.log(err));
         });
       }
-    },
-    mounted() {
-      this.friendsList = [];
     }
   };
 </script>

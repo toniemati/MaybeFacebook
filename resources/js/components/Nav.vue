@@ -48,7 +48,7 @@
           </div>
         </li>
         <li class="nav-item rounded bg-light mx-1">
-          <router-link class="nav-link" to="#">
+          <router-link class="nav-link" to="/chat">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"

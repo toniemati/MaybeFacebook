@@ -22,5 +22,7 @@ Route::resource('profiles', App\Http\Controllers\ProfileController::class);
 
 Route::resource('posts', App\Http\Controllers\PostController::class);
 
+Route::resource('messages', App\Http\Controllers\MessageController::class);
+
 Route::post('/{id}/addfriend/{user}', [App\Http\Controllers\FriendController::class, 'store']);
 Route::get('/{id}/status/{user}', [App\Http\Controllers\FriendController::class, 'status']);

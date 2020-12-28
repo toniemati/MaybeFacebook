@@ -8,6 +8,7 @@
           <router-view
             @profile="showLeftSide"
             :auth="auth"
+            :friends="friends"
             @friends="getFriends"
           >
           </router-view>
