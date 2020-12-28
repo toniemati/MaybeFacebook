@@ -2,7 +2,7 @@
   <div class="chatwith text-center">
     <h1>chat with {{ slug }}</h1>
     <div class="message-box">
-      <div class="messages">
+      <div class="messages" ref="feed">
         <p
           v-for="(message, idx) in filteredMessages"
           :class="{
@@ -19,6 +19,7 @@
         @keypress.enter="sendMessage"
         class="mess"
         type="text"
+        placeholder="Nowa wiadomość do ziomeczka..."
       />
     </div>
   </div>
@@ -45,6 +46,7 @@
           .then(res => {
             this.messages = res.data;
             this.getProfiles();
+            this.scrollToBottom();
           })
           .catch(err => console.log(err));
       },
@@ -83,14 +85,35 @@
         axios
           .post("/api/messages", this.message)
           .then(res => {
-            this.getMessages();
+            this.message.text = null;
+            this.filteredMessages.push(res.data);
           })
           .catch(err => console.log(err));
+      },
+      scrollToBottom: function() {
+        setTimeout(() => {
+          this.$refs.feed.scrollTop =
+            this.$refs.feed.scrollHeight - this.$refs.feed.clientHeight;
+        }, 50);
+      },
+      handleIncoming: function(message) {
+        this.messages.push(message);
+        this.filterMessages();
+      }
+    },
+    watch: {
+      filteredMessages: function() {
+        this.scrollToBottom();
       }
     },
     created() {
       this.slug = this.$route.params.slug;
       this.getMessages();
+    },
+    mounted() {
+      Echo.private(`messages.${this.auth.id}`).listen("NewMessage", e => {
+        this.handleIncoming(e.message);
+      });
     }
   };
 </script>
@@ -100,24 +123,26 @@
   display: flex;
   position: relative;
   margin: 10px;
-  min-height: 600px;
+  height: 600px;
 }
 
 .messages {
   width: 100%;
   overflow-y: scroll;
-  background-color: #ccc;
-  border: 1px solid darkgray;
-  border-radius: 10px;
+  background-color: #ddd;
+  border: 1px solid #777;
+  border-radius: 10px 10px 0 0;
 }
 
 .mess {
   position: absolute;
   bottom: 0;
+  transform: translateY(100%);
   width: 100%;
   padding: 5px;
   outline: none;
-  border: 1px solid darkgray;
+  border-top: 0;
+  border: 1px solid #777;
 }
 
 .from,
@@ -126,15 +151,17 @@
   width: 25%;
   padding: 5px 10px;
   margin: 5px;
-  background-color: rgb(39, 174, 219);
   border-radius: 5px;
+  font-weight: bold;
 }
 
 .from {
   margin-right: auto;
+  background-color: rgb(226, 155, 23);
 }
 
 .to {
   margin-left: auto;
+  background-color: rgb(32, 156, 206);
 }
 </style>
